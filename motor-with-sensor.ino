@@ -12,8 +12,11 @@ int in4 = 5;
 int trigPin = 11;
 int echoPin = 12;
 
+// obstacle threshold
+int safeDistance = 20; // cm
+
 void setup() {
-  Serial.begin(9600); // initialize serial monitor for sensor readings
+  Serial.begin(9600);
 
   pinMode(enA, OUTPUT);
   pinMode(in1, OUTPUT);
@@ -26,7 +29,6 @@ void setup() {
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
 
-  // set base speed for both motors
   analogWrite(enA, 150); 
   analogWrite(enB, 150);
 }
@@ -67,37 +69,46 @@ void stopMotors() {
 }
 
 int getDistance() {
-  // clear the trigPin
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
   
-  // send a 10 microsecond pulse
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
   
-  // read the echoPin, returns the sound wave travel time in microseconds
   long duration = pulseIn(echoPin, HIGH);
-  
-  // calculate the distance in cm
   int distance = duration * 0.034 / 2;
+  
+  // if sensor reads 0 (error), return a high number so it doesnt false trigger
+  if (distance == 0) {
+    return 100; 
+  }
   return distance;
 }
 
 void loop() {
-  // motor testing is temporarily commented out to isolate sensor testing
-  /*
-  moveForward();
-  delay(2000);
-  stopMotors();
-  delay(1000);
-  */
-
-  // test sensor
   int currentDistance = getDistance();
+  
   Serial.print("Distance: ");
   Serial.print(currentDistance);
   Serial.println(" cm");
+
+  if (currentDistance < safeDistance) {
+    // obstacle detected!
+    stopMotors();
+    delay(300);
+    
+    // back up a little bit
+    moveBackward();
+    delay(500);
+    
+    // turn to avoid it
+    turnRight();
+    delay(600); 
+  } else {
+    // path is clear
+    moveForward();
+  }
   
-  delay(500); // short delay to make the serial monitor readable
+  delay(50); // small delay to stabilize sensor readings
 }

@@ -2,7 +2,7 @@
 
 building an arduino car with an l298n motor driver and hc-sr04 sensor. 
 
-current status: hooked up the hc-sr04 ultrasonic sensor. wrote a getDistance() function that uses pulseIn to calculate how far away objects are in cm. i commented out the motor movement in the loop for now just to make sure the sensor numbers look accurate in the serial monitor.
+current status: combined the motor and sensor logic for basic obstacle avoidance. the bot now drives forward continuously. if the ultrasonic sensor detects an object closer than 20cm, it slams the brakes, reverses for half a second to get clearance, and spins right to find a new path.
 
 pins for left motor:
 enA -> 9
@@ -18,4 +18,6 @@ pins for sensor:
 trig -> 11
 echo -> 12
 
-next step is combining both systems: making the car drive forward, but call stopMotors() if the distance drops below a certain threshold.
+note: added a quick failsafe in getDistance() because sometimes cheap hc-sr04 sensors return 0 when they glitch out, which made the car randomly reverse when the path was empty.
+
+next step is refactoring the delay() functions to use millis() so the microcontroller doesn't completely freeze up while waiting.
