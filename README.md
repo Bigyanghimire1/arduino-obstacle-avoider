@@ -2,7 +2,7 @@
 
 building an arduino car with an l298n motor driver and hc-sr04 sensor. 
 
-current status: renamed the main sketch file to match the repository name for arduino ide compatibility. added differential steering logic (turnLeft and turnRight). the chassis can now spin in place by driving the wheels in opposite directions.
+current status: hooked up the hc-sr04 ultrasonic sensor. wrote a getDistance() function that uses pulseIn to calculate how far away objects are in cm. i commented out the motor movement in the loop for now just to make sure the sensor numbers look accurate in the serial monitor.
 
 pins for left motor:
 enA -> 9
@@ -14,4 +14,8 @@ enB -> 10
 in3 -> 6
 in4 -> 5
 
-next step is adding the hc-sr04 ultrasonic sensor and printing distance readings to the serial monitor.
+pins for sensor:
+trig -> 11
+echo -> 12
+
+next step is combining both systems: making the car drive forward, but call stopMotors() if the distance drops below a certain threshold.
