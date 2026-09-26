@@ -1,12 +1,19 @@
 # obstacle avoider bot 
 
-starting the build for the arduino car. just setting up the repo and testing the left motor with the l298n driver to make sure the wiring isnt busted and basic forward/back logic works. 
+building an arduino car with an l298n motor driver and hc-sr04 sensor. 
+
+current status: wired up both the left and right motors. tested them to run forward and backward in sync. 
 
 pins for left motor:
 enA -> 9
 in1 -> 8
 in2 -> 7
 
-note: make sure the external battery is hooked up to the l298n. laptop usb power isnt enough to actually spin the dc motor if its on the floor.
+pins for right motor:
+enB -> 10
+in3 -> 6
+in4 -> 5
 
-gonna wire up the right motor next and get them synced.
+note: if your bot spins in a circle when trying to go forward, it means the motors are mounted mirrored. just swap the HIGH and LOW states for the right motor in the code to fix it. 
+
+next step is abstracting these messy digitalWrite chunks into clean moveForward() and stop() functions.
