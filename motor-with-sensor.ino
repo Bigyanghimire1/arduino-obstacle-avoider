@@ -16,37 +16,62 @@ void setup() {
   pinMode(enB, OUTPUT);
   pinMode(in3, OUTPUT);
   pinMode(in4, OUTPUT);
-}
 
-void loop() {
-  // both motors forward
   analogWrite(enA, 150); 
   analogWrite(enB, 150);
-  
+}
+
+void moveForward() {
   digitalWrite(in1, HIGH);
   digitalWrite(in2, LOW);
   digitalWrite(in3, HIGH);
   digitalWrite(in4, LOW);
-  delay(2000);
+}
 
-  // brake
-  digitalWrite(in1, LOW);
-  digitalWrite(in2, LOW);
-  digitalWrite(in3, LOW);
-  digitalWrite(in4, LOW);
-  delay(1000);
-
-  // both motors reverse
+void moveBackward() {
   digitalWrite(in1, LOW);
   digitalWrite(in2, HIGH);
   digitalWrite(in3, LOW);
   digitalWrite(in4, HIGH);
-  delay(2000);
+}
 
-  // brake
+void turnLeft() {
+  // left motor backward, right motor forward
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, HIGH);
+  digitalWrite(in3, HIGH);
+  digitalWrite(in4, LOW);
+}
+
+void turnRight() {
+  // left motor forward, right motor backward
+  digitalWrite(in1, HIGH);
+  digitalWrite(in2, LOW);
+  digitalWrite(in3, LOW);
+  digitalWrite(in4, HIGH);
+}
+
+void stopMotors() {
   digitalWrite(in1, LOW);
   digitalWrite(in2, LOW);
   digitalWrite(in3, LOW);
   digitalWrite(in4, LOW);
+}
+
+void loop() {
+  // testing all movements
+  moveForward();
   delay(2000);
+  stopMotors();
+  delay(1000);
+
+  turnLeft();
+  delay(1000);
+  stopMotors();
+  delay(1000);
+
+  turnRight();
+  delay(1000);
+  stopMotors();
+  delay(1000);
 }

@@ -2,7 +2,7 @@
 
 building an arduino car with an l298n motor driver and hc-sr04 sensor. 
 
-current status: wired up both the left and right motors. tested them to run forward and backward in sync. 
+current status: renamed the main sketch file to match the repository name for arduino ide compatibility. added differential steering logic (turnLeft and turnRight). the chassis can now spin in place by driving the wheels in opposite directions.
 
 pins for left motor:
 enA -> 9
@@ -14,6 +14,4 @@ enB -> 10
 in3 -> 6
 in4 -> 5
 
-note: if your bot spins in a circle when trying to go forward, it means the motors are mounted mirrored. just swap the HIGH and LOW states for the right motor in the code to fix it. 
-
-next step is abstracting these messy digitalWrite chunks into clean moveForward() and stop() functions.
+next step is adding the hc-sr04 ultrasonic sensor and printing distance readings to the serial monitor.
