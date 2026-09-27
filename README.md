@@ -1,23 +1,38 @@
-# obstacle avoider bot 
+# arduino obstacle avoider bot
 
-building an arduino car with an l298n motor driver and hc-sr04 sensor. 
+finalizing the documentation for the obstacle-avoiding rover. the code uses a non-blocking state machine (millis instead of delay) to keep the ultrasonic sensor polling while the motors are running.
 
-current status: massive refactor. ripped out all the delay() functions and replaced them with a millis() state machine. using delay() pauses the entire microcontroller, which meant the bot was literally blind to new obstacles while it was executing a turn or reverse. now it evaluates sensor data continuously without freezing. 
+### components used
+- arduino uno r3
+- l298n motor driver
+- hc-sr04 ultrasonic sensor
+- 2x dc motors (with standard smart car chassis)
+- 18650 battery pack (for motors)
+- 9v battery or separate power bank (for arduino logic)
 
-also added a 30ms timeout to pulseIn() inside the getDistance() function, as default pulseIn will freeze the board for a full second if a sound wave gets lost.
+### wiring & pinout
+**left motor (via l298n)**
+- enA -> pin 9
+- in1 -> pin 8
+- in2 -> pin 7
 
-pins for left motor:
-enA -> 9
-in1 -> 8
-in2 -> 7
+**right motor (via l298n)**
+- enB -> pin 10
+- in3 -> pin 6
+- in4 -> pin 5
 
-pins for right motor:
-enB -> 10
-in3 -> 6
-in4 -> 5
+**hc-sr04 sensor**
+- trig -> pin 11
+- echo -> pin 12
+- vcc -> 5v on arduino
+- gnd -> gnd on arduino
 
-pins for sensor:
-trig -> 11
-echo -> 12
+### power setup warning
+do not try to power the dc motors directly from the arduino's 5v pin. it will fry the board or just keep resetting when the motors draw too much current. 
+connect your main battery pack directly to the 12v and gnd terminals on the l298n. you must route a wire from the gnd terminal on the l298n to the arduino gnd so the whole system shares a common ground.
 
-next step is adding an overall schematic, final wiring map, and deployment instructions so someone else can build this.
+### how to run
+1. wire everything up according to the map above.
+2. open `motor_with_sensor.ino` in the arduino ide or vs code.
+3. compile and upload to your arduino uno.
+4. put it on the floor and turn on the battery pack.
